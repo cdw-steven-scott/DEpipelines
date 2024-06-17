@@ -4,7 +4,7 @@ from google.cloud.bigquery import LoadJobConfig
 import time
 
 # Triggered by a change in a storage bucket
-#testlinepush
+#testlinepush back at you
 @functions_framework.cloud_event
 def hello_gcs(cloud_event):
     data = cloud_event.data
