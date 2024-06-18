@@ -30,7 +30,7 @@ with dag:
 
     start_pipeline = CloudDataFusionStartPipelineOperator(
     location="us-west1",
-    pipeline_name="etl-pipeline",
+    pipeline_name="ETLpipeline",
     instance_name="testfusion",
     task_id="start_datafusion_pipeline",
     )
