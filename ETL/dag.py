@@ -1,8 +1,10 @@
+import airflow
 from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
 from airflow.utils.dates import days_ago
 from airflow.providers.google.cloud.operators.datafusion import CloudDataFusionStartPipelineOperator
+
 default_args = {
     'owner': 'airflow',
     'start_date': datetime(2023, 12, 18),
