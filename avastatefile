@@ -1,0 +1,133 @@
+#enables IAM Api 
+
+resource "google_project_service" "iam_api" { 
+
+  service            = "iam.googleapis.com" 
+
+  project            = "cust-mansvcs-cdw"  # Replace with your project ID 
+
+  disable_on_destroy = false 
+
+} 
+
+ 
+
+#enables Compute Engine API 
+
+resource "google_project_service" "compute_api" { 
+
+  service            = "compute.googleapis.com" 
+
+  project            = "cust-mansvcs-cdw"  # Replace with your project ID 
+
+  disable_on_destroy = false 
+
+} 
+
+ 
+
+#creates sciencelogic SA and adds viewer role 
+
+resource "google_service_account" "cust-silo" { 
+
+  account_id   = "cust-silo" 
+
+  disabled     = false 
+
+  display_name = "cust silo" 
+
+  project      = "cust-mansvcs-cdw" 
+
+} 
+
+resource "google_project_iam_member" "cust-silo-viewer" { 
+
+  project = "cust-mansvcs-cdw" 
+
+  role    = "roles/viewer" 
+
+  member  = "serviceAccount:${google_service_account.cust-silo.email}" 
+
+} 
+
+ 
+
+#creates Avatar SA and adds compute image user role 
+
+resource "google_service_account" "cust-avatar" { 
+
+  project      = "cust-mansvcs-cdw" #adjust to customer project 
+
+  account_id   = "avatar" 
+
+  display_name = "avatar" 
+
+} 
+
+resource "google_project_iam_member" "cust-avatar-viewer" { 
+
+  project = "cust-mansvcs-cdw" 
+
+  role    = "roles/compute.imageUser" 
+
+  member  = "serviceAccount:${google_service_account.cust-avatar.email}" 
+
+} 
+
+ 
+
+ 
+
+# Create a VPC network 
+
+resource "google_compute_network" "cust-avatar" { 
+
+  name                    = "cust-avatar" 
+
+  auto_create_subnetworks = false  
+
+} 
+
+ 
+
+ 
+
+# Create a subnet 
+
+resource "google_compute_subnetwork" "cust-avatar" { 
+
+  name          = "cust-avatar" 
+
+  ip_cidr_range = "192.168.255.0/28" 
+
+  region        = "us-central1" 
+
+  network       = google_compute_network.cust-avatar.name 
+
+} 
+
+ 
+
+#creates storage bucket 
+
+provider "google" { 
+
+  project = "cust-mansvcs-cdw"#adjust to customer project 
+
+} 
+
+ 
+
+resource "google_storage_bucket" "cust-avatar" { 
+
+  name          = "cust-avatar"  # Bucket names must be globally unique 
+
+  location      = "us-central1"       # Replace with your desired location 
+
+  project       = "cust-mansvcs-cdw"  #adjust to customer project 
+
+  force_destroy = true      
+
+ uniform_bucket_level_access = true   
+
+ } 
