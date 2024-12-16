@@ -1,0 +1,25 @@
+#enables IAM Api 
+
+resource "google_project_service" "iam_api" { 
+
+  service            = "iam.googleapis.com" 
+
+  project            = "cust-mansvcs-cdw"  # Replace with your project ID 
+
+  disable_on_destroy = false 
+
+} 
+
+ 
+
+#enables Compute Engine API 
+
+resource "google_project_service" "compute_api" { 
+
+  service            = "compute.googleapis.com" 
+
+  project            = "cust-mansvcs-cdw"  # Replace with your project ID 
+
+  disable_on_destroy = false 
+
+} 
