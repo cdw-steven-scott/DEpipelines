@@ -1,0 +1,23 @@
+#creates storage bucket 
+
+provider "google" { 
+
+  project = "cust-mansvcs-cdw"#adjust to customer project 
+
+} 
+
+ 
+
+resource "google_storage_bucket" "cust-avatar" { 
+
+  name          = "cust-avatar"  # Bucket names must be globally unique 
+
+  location      = "us-central1"       # Replace with your desired location 
+
+  project       = "cust-mansvcs-cdw"  #adjust to customer project 
+
+  force_destroy = true      
+
+ uniform_bucket_level_access = true   
+
+ }
